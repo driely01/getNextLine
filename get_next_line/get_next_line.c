@@ -3,67 +3,78 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: del-yaag <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: del-yvbg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/02 21:29:04 by del-yaag          #+#    #+#             */
-/*   Updated: 2022/11/02 21:29:07 by del-yaag         ###   ########.fr       */
+/*   Created: 2022/11/02 21:29:04 by del-yvbg          #+#    #+#             */
+/*   Updated: 2022/11/02 21:29:07 by del-yvbg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char *get_next_line(int fd)
+char	*ft_read(char **leftover, char *line, size_t i)
 {
-	int r;
-	size_t i;
-	size_t j;
-	int size;
-	char *buffer;
-	char *line;
-	// char *temp;
-	static char *leftover;
+	size_t	j;
+	char	*temp;
 
-	r = 1;
-	i = 0;
 	j = 0;
-	size = 0;
-	buffer = NULL;
-	line = NULL;
-	// temp = NULL;
-	if (fd < 0)
-		return (0);
-	if (leftover)
+	temp = NULL;
+	line = ft_calloc(i + 2, sizeof(char));
+	if (!line)
+		return (free(*leftover),*leftover = NULL, NULL);
+	while (j <= i)
 	{
-		while (leftover[i])
-		{
-			if (leftover[i] == '\n')
-				return (ft_read(&leftover, line, i));
-			i++;
-		}
+		line[j] = (*leftover)[j];
+		j++;
 	}
+	temp = ft_calloc((ft_strlen(*leftover) - i) + 1, sizeof(char));
+	if (!temp)
+		return (free(*leftover),*leftover = NULL
+			, free(line), line = NULL, NULL);
+	j = 0;
+	while (++i <= ft_strlen(*leftover))
+		temp[j++] = (*leftover)[i];
+	free(*leftover);
+	*leftover = temp;
+	return (line);
+}
 
-	while (r > 0)
+int	strc(t_collecion *vb)
+{
+	vb->r = 1;
+	vb->i = -1;
+	vb->bf = NULL;
+	vb->line = NULL;
+	return (1);
+}
+
+char	*get_next_line(int fd)
+{
+	t_collecion	vb;
+	static char	*left;
+
+	while (!(strc(&vb) && (read(fd, NULL, 0) < 0 || fd < 0 || LO <= 0)))
 	{
-		buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-		r = read(fd, buffer, BUFFER_SIZE);
-		leftover = ft_append(leftover, buffer);
-		while (leftover[i])
-		{
-			if (leftover[i] == '\n')
-				return (ft_read(&leftover, line, i));
-			i++;
-		}
-		free(buffer);
-		if (r == 0 && ft_strlen(leftover) != 0)
-		{
-			char *tmp = leftover;
-			free(leftover);
-			leftover = 0;
-			return (tmp);
-		}
+		vb.bf = ft_calloc(LO + 1, sizeof(char));
+		if (!vb.bf)
+			return (NULL);
+		vb.r = read(fd, vb.bf, LO);
+		if (vb.r < 0 || (!vb.r && !left))
+			return (free(left), left = 0, free(vb.bf), vb.bf = NULL, NULL);
+		left = ft_append(left, vb.bf);
+		while (left[++vb.i])
+			if (left[vb.i] == '\n')
+				return (free(vb.bf), vb.bf = NULL
+					, ft_read(&left, vb.line, vb.i));
+		vb.i--;
+		free(vb.bf);
+		vb.bf = NULL;
+		if (vb.r == 0 && left[0])
+			return (vb.line = left, left = 0, vb.line);
+		if (vb.r == 0)
+			return (free(left), left = 0, NULL);
 	}
-
-	return (0);
+	return (free(left), left = 0, NULL);
 }
 
 // int main(void)
@@ -73,16 +84,13 @@ char *get_next_line(int fd)
 
 // 	line = 0;
 // 	fd = open("tesst.txt", O_CREAT | O_RDWR, 0777);
-// 	// while (1)
-// 	// {
-// 	// 	line = get_next_line(fd);
-// 	// 	if (!line)
-// 	// 		break;
-// 	// 	printf("%s", line);
-// 	// }
-// 	printf("%s", get_next_line(fd));
-// 	// printf("%s", get_next_line(0));
-// 	// printf("%s", get_next_line(0));
-// 	// printf("%s", get_next_line(0));
+// 	while (1)
+// 	{
+// 		line = get_next_line(fd);
+// 		if (!line)
+// 			break;
+// 		printf("%s", line);
+// 		free(line);
+// 	}
 // 	return (0);
 // }

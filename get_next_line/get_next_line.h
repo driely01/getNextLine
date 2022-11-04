@@ -10,13 +10,22 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GETNEXTLINE_H
-#define GETNEXTLINE_H
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
-#include <stdio.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <stdlib.h>
+# include <stdio.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <stdlib.h>
+
+typedef struct collecion{
+	int		r;
+	size_t	i;
+	char	*bf;
+	char	*line;
+}	t_collecion;
+
+# define LO BUFFER_SIZE
 
 size_t	ft_strlen(const char *str);
 void	*ft_calloc(size_t number, size_t size);
@@ -24,5 +33,6 @@ char	*cpy(char *s, char *p);
 char	*ft_append(char *s1, char *s2);
 char	*ft_read(char **leftover, char *line, size_t i);
 char	*get_next_line(int fd);
+int		find_new_line(char **leftover);
 
 #endif

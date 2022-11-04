@@ -58,53 +58,50 @@ char	*cpy(char *s, char *p)
 	return (p);
 }
 
-char	*ft_append(char *s1, char *s2)
+char	*cpy_two(char *s1, char *s2, char *p)
 {
 	size_t	i;
 	size_t	len1;
+
+	i = 0;
+	len1 = ft_strlen(s1);
+	p = malloc(sizeof(char) * (len1 + ft_strlen(s2) + 1));
+	if (!p)
+		return (0);
+	while (s1[i])
+	{
+		p[i] = s1[i];
+		i++;
+	}
+	free(s1);
+	s1 = 0;
+	i = 0;
+	while (s2[i])
+		p[len1++] = s2[i++];
+	p[len1] = '\0';
+	return (p);
+}
+
+char	*ft_append(char *s1, char *s2)
+{
 	char	*p;
 
-	i = -1;
 	p = NULL;
 	if (!s1 && !s2)
 		return (0);
 	if (!s1 || !*s1)
+	{
+		free(s1);
+		s1 = 0;
 		p = cpy(s2, p);
+	}
 	else if (!s2 || !*s2)
+	{
 		p = cpy(s1, p);
+		free(s1);
+		s1 = 0;
+	}
 	else
-	{
-		len1 = ft_strlen(s1);
-		p = malloc(sizeof(char) * (len1 + ft_strlen(s2) + 1));
-		if (!p)
-			return (0);
-		while (s1[++i])
-			p[i] = s1[i];
-		i = -1;
-		while (s2[++i])
-			p[len1++] = s2[i];
-		p[len1] = '\0';
-	}
+		p = cpy_two(s1, s2, p);
 	return (p);
-}
-
-char *ft_read(char **leftover, char *line, size_t i)
-{
-	size_t j;
-	char *temp;
-
-	j = 0;
-	temp = NULL;
-	line = ft_calloc(i + 2, sizeof(char));
-	while (j <= i)
-	{
-		line[j] = (*leftover)[j];
-		j++;
-	}
-	temp = ft_calloc((ft_strlen(*leftover) - i) + 1, sizeof(char));
-	j = 0;
-	while (++i <= ft_strlen(*leftover))
-		temp[j++] = (*leftover)[i];
-	*leftover = temp;
-	return (line);
 }
