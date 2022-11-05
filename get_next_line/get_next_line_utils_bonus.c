@@ -49,7 +49,7 @@ char	*cpy(char *s, char *p)
 
 	i = -1;
 	len1 = ft_strlen(s);
-	p = malloc(sizeof(char) * (len1 + 1));
+	p = ft_calloc((len1 + 1), sizeof(char));
 	if (!p)
 		return (0);
 	while (s[++i])
@@ -65,7 +65,7 @@ char	*cpy_two(char *s1, char *s2, char *p)
 
 	i = 0;
 	len1 = ft_strlen(s1);
-	p = malloc(sizeof(char) * (len1 + ft_strlen(s2) + 1));
+	p = ft_calloc((len1 + ft_strlen(s2) + 1), sizeof(char));
 	if (!p)
 		return (0);
 	while (s1[i])

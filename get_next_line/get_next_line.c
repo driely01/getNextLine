@@ -41,12 +41,12 @@ char	*ft_read(char **leftover, char *line, size_t i)
 	return (line);
 }
 
-int	strc(t_collecion *vb)
+int	stc(t_collecion *vb)
 {
 	vb->r = 1;
 	vb->i = -1;
 	vb->bf = NULL;
-	vb->line = NULL;
+	vb->ln = NULL;
 	return (1);
 }
 
@@ -55,24 +55,24 @@ char	*get_next_line(int fd)
 	t_collecion	vb;
 	static char	*left;
 
-	while (!(strc(&vb) && (fd < 0 || read(fd, NULL, 0) < 0 || LO <= 0)))
+	while (!(stc(&vb) && (fd < 0 || read(fd, NULL, 0) < 0 || BUFFER_SIZE <= 0)))
 	{
-		vb.bf = ft_calloc(LO + 1, sizeof(char));
+		vb.bf = malloc((BUFFER_SIZE + 1) * sizeof(char));
 		if (!vb.bf)
 			return (NULL);
-		vb.r = read(fd, vb.bf, LO);
+		vb.r = read(fd, vb.bf, BUFFER_SIZE);
 		if (vb.r < 0 || (!vb.r && !left))
 			return (free(left), left = 0, free(vb.bf), vb.bf = NULL, NULL);
+		vb.bf[vb.r] = 0;
 		left = ft_append(left, vb.bf);
 		while (left[++vb.i])
 			if (left[vb.i] == '\n')
-				return (free(vb.bf), vb.bf = NULL
-					, ft_read(&left, vb.line, vb.i));
+				return (free(vb.bf), vb.bf = NULL, ft_read(&left, vb.ln, vb.i));
 		vb.i--;
 		free(vb.bf);
 		vb.bf = NULL;
 		if (vb.r == 0 && left[0])
-			return (vb.line = left, left = 0, vb.line);
+			return (vb.ln = left, left = 0, vb.ln);
 		if (vb.r == 0)
 			return (free(left), left = 0, NULL);
 	}

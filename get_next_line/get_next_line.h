@@ -22,10 +22,8 @@ typedef struct collecion{
 	int		r;
 	size_t	i;
 	char	*bf;
-	char	*line;
+	char	*ln;
 }	t_collecion;
-
-# define LO BUFFER_SIZE
 
 size_t	ft_strlen(const char *str);
 void	*ft_calloc(size_t number, size_t size);
