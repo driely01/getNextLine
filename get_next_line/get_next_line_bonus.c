@@ -16,9 +16,11 @@ char	*ft_read(char **leftover, char *line, size_t i)
 {
 	size_t	j;
 	char	*temp;
+	size_t	lent;
 
 	j = 0;
 	temp = NULL;
+	lent = ft_strlen(*leftover);
 	line = ft_calloc(i + 2, sizeof(char));
 	if (!line)
 		return (free(*leftover),*leftover = NULL, NULL);
@@ -27,12 +29,12 @@ char	*ft_read(char **leftover, char *line, size_t i)
 		line[j] = (*leftover)[j];
 		j++;
 	}
-	temp = ft_calloc((ft_strlen(*leftover) - i) + 1, sizeof(char));
+	temp = ft_calloc((lent - i) + 1, sizeof(char));
 	if (!temp)
 		return (free(*leftover),*leftover = NULL
 			, free(line), line = NULL, NULL);
 	j = 0;
-	while (++i <= ft_strlen(*leftover))
+	while (++i <= lent)
 		temp[j++] = (*leftover)[i];
 	free(*leftover);
 	*leftover = temp;
@@ -53,7 +55,7 @@ char	*get_next_line(int fd)
 	t_collecion	vb;
 	static char	*lo[10240];
 
-	while (!(strc(&vb) && (read(fd, NULL, 0) < 0 || fd < 0 || LO <= 0)))
+	while (!(strc(&vb) && (fd < 0 || read(fd, NULL, 0) < 0 || LO <= 0)))
 	{
 		vb.bf = ft_calloc(LO + 1, sizeof(char));
 		if (!vb.bf)
@@ -76,42 +78,3 @@ char	*get_next_line(int fd)
 	}
 	return (free(lo[fd]), lo[fd] = 0, NULL);
 }
-// int main(void)
-// {
-// 	// int fd;
-// 	// char *line;
-// 	// line = 0;
-// 	// fd = open("tesst.txt", O_CREAT | O_RDWR, 0777);
-// 	// while (1)
-// 	// {
-// 	// 	line = get_next_line(fd);
-// 	// 	if (!line)
-// 	// 		break;
-// 	// 	printf("%s", line);
-// 	// 	free(line);
-// 	// }
-// 	int fd1 = open("test1", O_RDONLY);
-// 	int fd2 = open("test2", O_RDONLY);
-// 	int fd3 = open("test3", O_RDONLY);
-// 	int fd4 = open("test4", O_RDONLY);
-// 	printf("%s", get_next_line(fd1));
-// 	printf("%s", get_next_line(fd1));
-// 	printf("-----------------------\n");
-// 	printf("%s", get_next_line(fd2));
-// 	printf("%s", get_next_line(fd2));
-// 	printf("-----------------------\n");
-// 	printf("%s", get_next_line(fd3));
-// 	printf("%s", get_next_line(fd3));
-// 	printf("-----------------------\n");
-// 	printf("%s", get_next_line(fd4));
-// 	printf("%s", get_next_line(fd4));
-// 	printf("-----------------------\n");
-// 	printf("%s", get_next_line(fd1));
-// 	printf("-----------------------\n");
-// 	printf("%s", get_next_line(fd2));
-// 	printf("-----------------------\n");
-// 	printf("%s", get_next_line(fd3));
-// 	printf("-----------------------\n");
-// 	printf("%s", get_next_line(fd4));
-// 	return (0);
-// }
