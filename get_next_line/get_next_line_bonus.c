@@ -50,7 +50,7 @@ int	stc(t_collecion *vb)
 	return (1);
 }
 
-char	*get_next_line(int fd)
+char	*get_linee(int fd)
 {
 	t_collecion	vb;
 	static char	*lo[10240];
@@ -76,5 +76,12 @@ char	*get_next_line(int fd)
 		if (vb.r == 0)
 			return (free(lo[fd]), lo[fd] = 0, NULL);
 	}
-	return (NULL);
+	return (free(lo[fd]), lo[fd] = 0, NULL);
+}
+
+char	*get_next_line(int fd)
+{
+	if (fd < 0)
+		return (NULL);
+	return (get_linee(fd));
 }
