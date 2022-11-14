@@ -31,6 +31,7 @@ char	*cpy(char *s, char *p);
 char	*ft_append(char *s1, char *s2);
 char	*ft_read(char **leftover, char *line, size_t i);
 char	*get_next_line(int fd);
-int		find_new_line(char **leftover);
+char	*cpy_two(char *s1, char *s2, char *p);
+int		stc(t_collecion *vb);
 
 #endif
